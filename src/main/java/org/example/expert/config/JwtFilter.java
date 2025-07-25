@@ -31,6 +31,8 @@ public class JwtFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
         String url = httpRequest.getRequestURI();
+        log.info("JwtFilter doFilter 호출됨. 요청 URI: {}", ((HttpServletRequest)
+                request).getRequestURI());
 
         if (url.startsWith("/auth")) {
             chain.doFilter(request, response);
@@ -65,6 +67,7 @@ public class JwtFilter implements Filter {
                 // 관리자 권한이 없는 경우 403을 반환합니다.
                 if (!UserRole.ADMIN.equals(userRole)) {
                     httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "관리자 권한이 없습니다.");
+                    log.info("왜 메세지가 안나오지");
                     return;
                 }
                 chain.doFilter(request, response);
